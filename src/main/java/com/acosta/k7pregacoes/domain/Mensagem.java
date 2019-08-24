@@ -1,41 +1,44 @@
 package com.acosta.k7pregacoes.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Pregador implements Serializable {	
+public class Mensagem implements Serializable {	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	private String nome;
+	private String tema;
+	private String link;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy="pregador")
-	private List<Mensagem> mensagens = new ArrayList<>();
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name="pregador_id")
+	private Pregador pregador;
 	
-	
-	public Pregador() {	
+	public Mensagem() {
 		
 	}
-
-	public Pregador(Integer id, String nome) {
+	
+	
+	public Mensagem(Integer id, String tema, String link, Pregador pregador) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.tema = tema;
+		this.link = link;
+		this.pregador = pregador;
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -44,21 +47,31 @@ public class Pregador implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getTema() {
+		return tema;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setTema(String tema) {
+		this.tema = tema;
 	}
 	
-	public List<Mensagem> getMensagens() {
-		return mensagens;
+	public String getLink() {
+		return link;
 	}
 
-	public void setMensagens(List<Mensagem> mensagens) {
-		this.mensagens = mensagens;
+	public void setLink(String link) {
+		this.link = link;
 	}
+		
+	public Pregador getPregador() {
+		return pregador;
+	}
+
+
+	public void setPregador(Pregador pregador) {
+		this.pregador = pregador;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -76,13 +89,15 @@ public class Pregador implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pregador other = (Pregador) obj;
+		Mensagem other = (Mensagem) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
 
+	
+	
 }

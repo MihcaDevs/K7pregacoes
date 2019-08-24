@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.acosta.k7pregacoes.domain.Pregador;
 import com.acosta.k7pregacoes.repositories.PregadorRepository;
+import com.acosta.k7pregacoes.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class PregadorService {
@@ -15,8 +16,9 @@ public class PregadorService {
 	private PregadorRepository repo;
 	
 	public Pregador buscar(Integer id) {
-		Optional<Pregador> obj = repo.findById(id);
-		return obj.orElse(null);
+		Optional<Pregador> obj = repo.findById(id);		
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! id: " + id +", Tipo: " + Pregador.class.getName()));
 		
 	}
 
