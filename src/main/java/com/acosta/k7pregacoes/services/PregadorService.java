@@ -22,4 +22,8 @@ public class PregadorService {
 		
 	}
 
+	public Iterable<Pregador> getPregadores() {		
+		return repo.findAll();
+	}
+
 }
